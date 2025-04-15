@@ -38,7 +38,10 @@ public class ClinicRepository : IClinicRepository
     public async Task DeleteClinicCardAsync(int clinicCardId)
     {
         var clinicCard = await _context.ClinicCards.FindAsync(clinicCardId);
-        _context.ClinicCards.Remove(clinicCard);
+        if (clinicCard != null)
+            _context.ClinicCards.Remove(clinicCard);
+        else
+            throw new NullReferenceException();
         await _context.SaveChangesAsync();
     }
 }
