@@ -1,0 +1,6 @@
+@fastmed_api_HostAddress = http://localhost:5136
+
+GET {{fastmed_api_HostAddress}}/fastmed/
+Accept: application/json
+
+###

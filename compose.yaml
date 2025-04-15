@@ -1,0 +1,6 @@
+﻿services:
+  fastmed-api:
+    image: fastmed-api
+    build:
+      context: .
+      dockerfile: fastmed-api/Dockerfile
