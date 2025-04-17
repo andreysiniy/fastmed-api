@@ -20,7 +20,7 @@ public class ClinicRepository : IClinicRepository
 
     public async Task<ClinicCard> GetClinicCardByIdAsync(int id)
     {
-        return await _context.ClinicCards.FindAsync(id) ?? throw new NullReferenceException();
+        return await _context.ClinicCards.FindAsync(id) ?? throw new NullReferenceException("ClinicCard id: {id} not found");
     }
 
     public async Task AddClinicCardAsync(ClinicCard clinicCard)
@@ -41,7 +41,7 @@ public class ClinicRepository : IClinicRepository
         if (clinicCard != null)
             _context.ClinicCards.Remove(clinicCard);
         else
-            throw new NullReferenceException();
+            throw new NullReferenceException("ClinicCard id: {clinicCardId} not found");
         await _context.SaveChangesAsync();
     }
 }

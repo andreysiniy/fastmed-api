@@ -20,7 +20,7 @@ public class AppointmentRepository : IAppointmentRepository
 
     public async Task<Appointment> GetAppointmentByIdAsync(int id)
     {
-        return await _context.Appointments.FindAsync(id) ?? throw new NullReferenceException();
+        return await _context.Appointments.FindAsync(id) ?? throw new NullReferenceException("Appointment id: {id} not found");
     }
 
     public async Task AddAppointmentAsync(Appointment appointment)
@@ -41,7 +41,7 @@ public class AppointmentRepository : IAppointmentRepository
         if (appointment != null)
             _context.Appointments.Remove(appointment);
         else
-            throw new NullReferenceException();
+            throw new NullReferenceException("Appointment id: {id} not found");
         
         await _context.SaveChangesAsync();
     }

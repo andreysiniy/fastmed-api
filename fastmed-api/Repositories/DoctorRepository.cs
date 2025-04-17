@@ -20,7 +20,7 @@ public class DoctorRepository : IDoctorRepository
 
     public async Task<DoctorCard> GetDoctorCardAsync(int id)
     {
-        return await _context.DoctorCards.FindAsync(id) ?? throw new NullReferenceException();
+        return await _context.DoctorCards.FindAsync(id) ?? throw new NullReferenceException("DoctorCard id: {id} not found");
     }
     
     public async Task AddDoctorCardAsync(DoctorCard doctorCard)

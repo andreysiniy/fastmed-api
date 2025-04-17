@@ -20,7 +20,7 @@ public class WorkingHourRepository : IWorkingHourRepository
 
     public async Task<WorkingHour> GetWorkingHourByIdAsync(int id)
     {
-        return await _context.WorkingHours.FindAsync(id) ?? throw new NullReferenceException();
+        return await _context.WorkingHours.FindAsync(id) ?? throw new NullReferenceException("WorkingHour id: {id} not found");
     }
 
     public async Task AddWorkingHourAsync(WorkingHour workingHour)
@@ -41,7 +41,7 @@ public class WorkingHourRepository : IWorkingHourRepository
         if (workingHour != null)
             _context.WorkingHours.Remove(workingHour);
         else 
-            throw new NullReferenceException();
+            throw new NullReferenceException("WorkingHour id: {id} not found");
         await _context.SaveChangesAsync();
     }
 
