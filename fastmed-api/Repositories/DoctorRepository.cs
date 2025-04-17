@@ -45,8 +45,8 @@ public class DoctorRepository : IDoctorRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<ClinicCard>> GetDoctorCardsByClinicIdAsync(int clinicId)
+    public async Task<IEnumerable<DoctorCard>> GetDoctorCardsByClinicIdAsync(int clinicId)
     {
-        return await _context.ClinicCards.Where(c => c.ClinicId == clinicId).ToListAsync();
+        return await _context.DoctorCards.Where(c => c.ClinicId == clinicId).ToListAsync();
     }
 }

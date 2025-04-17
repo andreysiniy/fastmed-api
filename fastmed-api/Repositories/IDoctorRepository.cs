@@ -9,5 +9,5 @@ public interface IDoctorRepository
     Task AddDoctorCardAsync(DoctorCard doctorCard);
     Task UpdateDoctorCardAsync(DoctorCard doctorCard);
     Task DeleteDoctorCardAsync(int doctorCardId);
-    Task<IEnumerable<ClinicCard>> GetDoctorCardsByClinicIdAsync(int clinicId);
+    Task<IEnumerable<DoctorCard>> GetDoctorCardsByClinicIdAsync(int clinicId);
 }
