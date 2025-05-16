@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace fastmed_api.Models;
 
 [Table("Appointment")]
 public class Appointment
 {
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("appointment_id")] public int AppointmentId { get; set; }
     [Column("doctor_id")] public int DoctorId { get; set; }

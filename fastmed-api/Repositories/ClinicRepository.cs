@@ -15,7 +15,10 @@ public class ClinicRepository : IClinicRepository
     
     public async Task<IEnumerable<ClinicCard>> GetAllClinicCardsAsync()
     {
-        return await _context.ClinicCards.ToListAsync();
+        return await _context.ClinicCards
+            .Include(c => c.WorkingHours)
+            .Include(c => c.Doctors)
+            .ToListAsync();
     }
 
     public async Task<ClinicCard> GetClinicCardByIdAsync(int id)

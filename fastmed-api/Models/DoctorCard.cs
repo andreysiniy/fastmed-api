@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace fastmed_api.Models;
 
 [Table("DoctorCard")]
 public class DoctorCard
 {
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("doctor_id")] public int DoctorId { get; set; }
     [Column("name")] public string Name { get; set; } = null!;
