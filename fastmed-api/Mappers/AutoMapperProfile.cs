@@ -19,5 +19,7 @@ public class AutoMapperProfile : Profile
 
         // Appointment → AppointmentDto
         CreateMap<Appointment, AppointmentDto>();
+        // AppointmentDto → Appointment
+        CreateMap<AppointmentDto, Appointment>();
     }
 }

@@ -11,6 +11,7 @@ public class DoctorCard
     [Column("doctor_id")] public int DoctorId { get; set; }
     [Column("name")] public string Name { get; set; } = null!;
     [Column("experience")] public int Experience { get; set; }
+    [Column("speciality")] public string Speciality { get; set; } = null!;
     [Column("phone")] public string PhoneNumber { get; set; } = null!;
     [Column("notes")] public string? Notes { get; set; } 
     [Column("clinic_id")] public int ClinicId { get; set; }
