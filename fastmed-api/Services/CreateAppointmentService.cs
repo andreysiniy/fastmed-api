@@ -2,7 +2,7 @@ using AutoMapper;
 using fastmed_api.DTO;
 using fastmed_api.Models;
 using fastmed_api.Repositories;
-
+using fastmed_api.Misc;
 
 namespace fastmed_api.Services;
 
@@ -28,13 +28,14 @@ public class CreateAppointmentService : ICreateAppointmentService
             throw new ArgumentException("A valid DoctorId must be provided.", nameof(appointmentDto.DoctorId));
         }
         var doctorEntity = await _doctorRepository.GetDoctorCardAsync(appointmentDto.DoctorId.Value);
-        if (doctorEntity == null)
-        {
-            throw new NullReferenceException($"Doctor with ID {appointmentDto.DoctorId.Value} not found.");
-        }
         var clinicDto = await _clinicCardService.GetClinicCard(doctorEntity.ClinicId);
+        var appointmentWeekDay = (int)appointmentDto.AppointmentTime.DayOfWeek;
+        WorkingHourDto workingHours =
+            await _clinicCardService.GetWorkingHoursByWeekDay(doctorEntity.ClinicId, appointmentWeekDay);
 
-
+        if (!MedUtils.isInTimeRange(appointmentDto.AppointmentTime, workingHours.DayOfWeek, workingHours.OpenTime, workingHours.CloseTime))
+            throw new ArgumentException("The provided time is not in the working hours of the clinic.", nameof(appointmentDto.AppointmentTime));
+        
         var appointmentEntity = _mapper.Map<Appointment>(appointmentDto);
         appointmentEntity.Doctor = doctorEntity;
         

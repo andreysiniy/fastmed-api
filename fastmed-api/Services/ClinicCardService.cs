@@ -31,6 +31,17 @@ namespace fastmed_api.Services
             return _mapper.Map<ClinicCardDto>(clinic);
         }
 
+        public async Task<WorkingHourDto> GetWorkingHoursByWeekDay(int clinicId, int weekDay)
+        {
+            var clinic = await _clinicRepository.GetClinicCardByIdAsync(clinicId);
+            if (clinic == null)
+                throw new Exception($"ClinicCardService: Clinic with id {clinicId} not found");
+            
+            var mappedClinic = _mapper.Map<ClinicCardDto>(clinic);
+            
+            return mappedClinic.WorkingHours.Find(c => c.DayOfWeek == weekDay) ?? throw new Exception($"ClinicCardService: WorkingHour for week day {weekDay} not found");
+        }
+
         public async Task<ClinicCardDto> CreateClinicCard(ClinicCardDto cardDto)
         {
             var clinic = _mapper.Map<ClinicCard>(cardDto);
