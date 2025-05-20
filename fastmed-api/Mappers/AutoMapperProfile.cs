@@ -19,6 +19,9 @@ public class AutoMapperProfile : Profile
 
         // WorkingHour → WorkingHourDto
         CreateMap<WorkingHour, WorkingHourDto>();
+        
+        // WorkingHourDto → WorkingHour 
+        CreateMap<WorkingHourDto, WorkingHour>();
 
         // Appointment → AppointmentDto
         CreateMap<Appointment, AppointmentDto>();
