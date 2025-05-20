@@ -43,7 +43,7 @@ namespace fastmed_api.Controllers
         [HttpPost]
         public async Task<ActionResult<WorkingHourDto>> Create([FromBody] WorkingHourDto workingHourDto)
         {
-            _logger.LogInformation($"Creating working hour for clinic id {workingHourDto.Clinic.ClinicId} on day {workingHourDto.DayOfWeek}");
+            _logger.LogInformation($"Creating working hour for on day {workingHourDto.DayOfWeek}");
             var created = await _workingHourService.CreateWorkingHour(workingHourDto);
             _logger.LogInformation($"Created working hour with id {created.Id}");
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
