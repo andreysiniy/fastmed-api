@@ -23,7 +23,19 @@ public class ClinicRepository : IClinicRepository
 
     public async Task<ClinicCard> GetClinicCardByIdAsync(int id)
     {
-        return await _context.ClinicCards.FindAsync(id) ?? throw new NullReferenceException("ClinicCard id: {id} not found");
+        return await _context.ClinicCards
+            .Include(c => c.WorkingHours)
+            .Include(c => c.Doctors)
+            .FirstOrDefaultAsync(c => c.ClinicId == id)
+            ?? throw new NullReferenceException("ClinicCard id: {id} not found");
+    }
+
+    public async Task<IEnumerable<ClinicCard>> GetClinicCardsByNameAsync(string name)
+    {
+        return await _context.ClinicCards
+            .Where(c => c.Name.Contains(name))
+            .Include(c => c.WorkingHours)
+            .ToListAsync();
     }
 
     public async Task AddClinicCardAsync(ClinicCard clinicCard)

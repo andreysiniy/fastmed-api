@@ -9,11 +9,13 @@ namespace fastmed_api.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly ICreateAppointmentService _createAppointmentService;
         private readonly ILogger<AppointmentController> _logger;
 
-        public AppointmentController(IAppointmentService appointmentService, ILogger<AppointmentController> logger)
+        public AppointmentController(IAppointmentService appointmentService, ICreateAppointmentService createAppointmentService, ILogger<AppointmentController> logger)
         {
             _appointmentService = appointmentService;
+            _createAppointmentService = createAppointmentService;
             _logger = logger;
         }
 
@@ -41,10 +43,20 @@ namespace fastmed_api.Controllers
         }
 
         [HttpPost]
+        [Route("createOld")]
         public async Task<ActionResult<AppointmentDto>> Create([FromBody] AppointmentDto appointmentDto)
         {
             _logger.LogInformation($"Creating appointment for patient {appointmentDto.PatientName}");
             var created = await _appointmentService.CreateAppointment(appointmentDto);
+            _logger.LogInformation($"Created appointment with id {created.AppointmentId}");
+            return CreatedAtAction(nameof(GetById), new { id = created.AppointmentId }, created);
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult<CreateAppointmentResultDto>> Create([FromBody] CreateAppointmentDto appointmentDto)
+        {
+            _logger.LogInformation($"Creating appointment for patient {appointmentDto.PatientName}");
+            var created = await _createAppointmentService.CreateAppointment(appointmentDto);
             _logger.LogInformation($"Created appointment with id {created.AppointmentId}");
             return CreatedAtAction(nameof(GetById), new { id = created.AppointmentId }, created);
         }

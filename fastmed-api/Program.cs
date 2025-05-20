@@ -32,6 +32,8 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 builder.Services.AddScoped<IWorkingHourService, WorkingHourService>();
 
+builder.Services.AddScoped<ICreateAppointmentService, CreateAppointmentService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
