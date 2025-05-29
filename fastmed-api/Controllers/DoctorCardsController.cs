@@ -64,7 +64,23 @@ namespace fastmed_api.Controllers
             _logger.LogInformation($"Returning {doctors.Count} doctor cards with speciality {speciality}");
             return Ok(doctors);
         }
-        
+
+        [HttpGet("{id}/timeslots/{date:datetime}")]
+        public async Task<ActionResult<List<TimeSpan>>> GetWorkHours(int id, DateTime date)
+        {
+            _logger.LogInformation($"Getting work hours for doctor card with id {id}");
+            var timeSlots = await _doctorCardService.GetAvailableHoursAsync(id, date);
+            return Ok(timeSlots);
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<ActionResult<List<DoctorCardDto>>> GetByName(string name)
+        {
+            _logger.LogInformation($"Getting doctor cards with name: {name}");
+            var doctors = await _doctorCardService.GetDoctorCardsByNameAsync(name);
+            return Ok(doctors);
+        }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] DoctorCardDto doctorCardDto)

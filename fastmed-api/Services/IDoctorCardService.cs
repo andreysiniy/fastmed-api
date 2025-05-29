@@ -10,5 +10,8 @@ public interface IDoctorCardService
     Task DeleteDoctorCard(int id);
     Task UpdateDoctorCard(int id, DoctorCardDto card);
     Task<List<DoctorCardDto>> GetDoctorCardsBySpecialityAsync(string speciality);
-    
+    Task<List<TimeSpan>> GetAvailableHoursAsync(int doctorCardId, DateTime date);
+  //  Task<List<DateTime>> GetAvailableDatesFromTodayAsync(int doctorCardId, DateTime fromDate);
+    Task<List<DoctorCardDto>> GetDoctorCardsByNameAsync(string name);
+   // Task<List<DoctorCardDto>> GetDoctorCardsByClinic(string clinicName);
 }

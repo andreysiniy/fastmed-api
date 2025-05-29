@@ -62,5 +62,42 @@ namespace fastmed_api.Services
             var doctors = await _doctorRepository.GetDoctorCardsBySpecialityAsync(speciality);
             return _mapper.Map<List<DoctorCardDto>>(doctors);
         }
+        
+        
+        public async Task<List<TimeSpan>> GetAvailableHoursAsync(int doctorCardId, DateTime date)
+        {
+            int weekDay = (int)date.DayOfWeek;
+            var doctor = await _doctorRepository.GetDoctorCardAsync(doctorCardId);
+            var doctorWorkingHours = doctor.Clinic.WorkingHours;
+            var workingHourEntity = doctorWorkingHours.Where(c => c.DayOfWeek == weekDay).FirstOrDefault();
+            WorkingHourDto weekDayWorkingHours = _mapper.Map<WorkingHourDto>(workingHourEntity);
+            var timeSlots = new List<TimeSpan>();
+    
+            var currentTime = weekDayWorkingHours.OpenTime;
+            while (currentTime < weekDayWorkingHours.CloseTime)
+            {
+                timeSlots.Add(currentTime);
+                currentTime = currentTime.Add(TimeSpan.FromMinutes(30)); 
+            }
+
+            return timeSlots;
+        }
+
+      /*  public async Task<List<DateTime>> GetAvailableDatesFromTodayAsync(int doctorCardId, DateTime fromDate)
+        {
+            int weekDay = (int)fromDate.DayOfWeek;
+            var doctor = await _doctorRepository.GetDoctorCardAsync(doctorCardId);
+            var doctorWorkingHours = doctor.Clinic.WorkingHours;
+        }
+
+       */
+        public async Task<List<DoctorCardDto>> GetDoctorCardsByNameAsync(string name)
+        {
+            return _mapper.Map<List<DoctorCardDto>>(await _doctorRepository.GetDoctorCardsByNameAsync(name));
+        }
+
+     //   public async Task<List<DoctorCardDto>> GetDoctorCardsByClinic(string clinicName)
+      //  {
+       // } 
     }
 }

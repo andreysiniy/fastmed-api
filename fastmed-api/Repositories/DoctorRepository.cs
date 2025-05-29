@@ -20,7 +20,11 @@ public class DoctorRepository : IDoctorRepository
 
     public async Task<DoctorCard> GetDoctorCardAsync(int id)
     {
-        return await _context.DoctorCards.FindAsync(id) ?? throw new NullReferenceException("DoctorCard id: {id} not found");
+       // return await _context.DoctorCards.FindAsync(id) ?? throw new NullReferenceException("DoctorCard id: {id} not found");
+       return await _context.DoctorCards
+           .Include(d => d.Clinic)
+           .ThenInclude(c => c.WorkingHours)
+           .FirstOrDefaultAsync(d => d.DoctorId == id) ?? throw new NullReferenceException();
     }
     
     public async Task AddDoctorCardAsync(DoctorCard doctorCard)
@@ -55,6 +59,13 @@ public class DoctorRepository : IDoctorRepository
         string searchTerm = speciality.Trim().ToLower();
         return await _context.DoctorCards
             .Where(d => d.Speciality.ToLower().Contains(searchTerm))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<DoctorCard>> GetDoctorCardsByNameAsync(string name)
+    {
+        return await _context.DoctorCards
+            .Where(d => d.Name.Contains(name))
             .ToListAsync();
     }
 }
