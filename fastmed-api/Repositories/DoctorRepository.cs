@@ -49,4 +49,12 @@ public class DoctorRepository : IDoctorRepository
     {
         return await _context.DoctorCards.Where(c => c.ClinicId == clinicId).ToListAsync();
     }
+    
+    public async Task<IEnumerable<DoctorCard>> GetDoctorCardsBySpecialityAsync(string speciality)
+    {
+        string searchTerm = speciality.Trim().ToLower();
+        return await _context.DoctorCards
+            .Where(d => d.Speciality.ToLower().Contains(searchTerm))
+            .ToListAsync();
+    }
 }

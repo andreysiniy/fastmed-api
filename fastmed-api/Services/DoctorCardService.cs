@@ -56,5 +56,11 @@ namespace fastmed_api.Services
             _mapper.Map(cardDto, existing);
             await _doctorRepository.UpdateDoctorCardAsync(existing);
         }
+        
+        public async Task<List<DoctorCardDto>> GetDoctorCardsBySpecialityAsync(string speciality)
+        {
+            var doctors = await _doctorRepository.GetDoctorCardsBySpecialityAsync(speciality);
+            return _mapper.Map<List<DoctorCardDto>>(doctors);
+        }
     }
 }

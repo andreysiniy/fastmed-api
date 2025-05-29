@@ -48,6 +48,23 @@ namespace fastmed_api.Controllers
             _logger.LogInformation($"Created doctor card with id {created.DoctorId}");
             return CreatedAtAction(nameof(GetById), new { id = created.DoctorId }, created);
         }
+        
+        [HttpGet("speciality/{speciality}")]
+        public async Task<ActionResult<List<DoctorCardDto>>> GetBySpeciality(string speciality)
+        {
+            _logger.LogInformation($"Attempting to get doctor cards with speciality: {speciality}");
+            var doctors = await _doctorCardService.GetDoctorCardsBySpecialityAsync(speciality);
+            
+            if (doctors == null)
+            {
+                _logger.LogInformation($"No doctor cards found with speciality: {speciality}");
+                return NotFound($"No doctors found with speciality: {speciality}");
+            }
+            
+            _logger.LogInformation($"Returning {doctors.Count} doctor cards with speciality {speciality}");
+            return Ok(doctors);
+        }
+        
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] DoctorCardDto doctorCardDto)

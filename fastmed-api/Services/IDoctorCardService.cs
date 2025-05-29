@@ -9,4 +9,6 @@ public interface IDoctorCardService
     Task<DoctorCardDto> CreateDoctorCard(DoctorCardDto card);
     Task DeleteDoctorCard(int id);
     Task UpdateDoctorCard(int id, DoctorCardDto card);
+    Task<List<DoctorCardDto>> GetDoctorCardsBySpecialityAsync(string speciality);
+    
 }
