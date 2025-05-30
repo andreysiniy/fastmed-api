@@ -12,4 +12,5 @@ public interface IDoctorRepository
     Task<IEnumerable<DoctorCard>> GetDoctorCardsByClinicIdAsync(int clinicId);
     Task<IEnumerable<DoctorCard>> GetDoctorCardsBySpecialityAsync(string speciality);
     Task<IEnumerable<DoctorCard>> GetDoctorCardsByNameAsync(string name);
+    Task<IEnumerable<DoctorCard>> GetFilteredDoctorCardsAsync(int? clinicId, string? speciality, string? name);
 }

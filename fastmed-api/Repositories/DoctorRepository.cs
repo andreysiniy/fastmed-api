@@ -68,4 +68,28 @@ public class DoctorRepository : IDoctorRepository
             .Where(d => d.Name.Contains(name))
             .ToListAsync();
     }
+    public async Task<IEnumerable<DoctorCard>> GetFilteredDoctorCardsAsync(int? clinicId, string? speciality, string? name)
+    {
+        var query = _context.DoctorCards.AsQueryable();
+
+        if (clinicId.HasValue)
+        {
+            query = query.Where(d => d.ClinicId == clinicId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(speciality))
+        {
+            string specialityTerm = speciality.Trim().ToLower();
+            query = query.Where(d => d.Speciality.ToLower().Contains(specialityTerm));
+        }
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            string nameTerm = name.Trim().ToLower();
+            query = query.Where(d => d.Name.ToLower().Contains(nameTerm));
+        }
+
+        return await query.Include(d => d.Clinic) 
+            .ToListAsync();
+    }
 }

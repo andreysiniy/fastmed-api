@@ -4,7 +4,7 @@ namespace fastmed_api.Services;
 
 public interface IDoctorCardService
 {
-    Task<List<DoctorCardDto>> GetDoctorCards();
+    Task<List<DoctorCardDto>> GetDoctorCards(int? clinicId, string? speciality, string? name, DateTime? appointmentDate);
     Task<DoctorCardDto> GetDoctorCard(int id);
     Task<DoctorCardDto> CreateDoctorCard(DoctorCardDto card);
     Task DeleteDoctorCard(int id);

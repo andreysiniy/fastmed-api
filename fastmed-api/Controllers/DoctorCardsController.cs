@@ -18,10 +18,16 @@ namespace fastmed_api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DoctorCardDto>>> GetAll()
+        public async Task<ActionResult<List<DoctorCardDto>>> GetAll(
+            [FromQuery] int? clinicId,
+            [FromQuery] string? speciality,
+            [FromQuery] string? name,
+            [FromQuery] DateTime? appointmentDate
+            )
         {
             _logger.LogInformation("Getting all doctor cards");
-            var doctors = await _doctorCardService.GetDoctorCards();
+            _logger.LogInformation($"Getting doctor cards with filters: ClinicId={clinicId}, Speciality='{speciality}', Name='{name}', AppointmentDate={appointmentDate}");
+            var doctors = await _doctorCardService.GetDoctorCards(clinicId, speciality, name, appointmentDate);
             _logger.LogInformation($"Returning {doctors.Count} doctor cards");
             return Ok(doctors);
         }

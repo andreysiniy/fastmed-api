@@ -16,10 +16,37 @@ namespace fastmed_api.Services
             _mapper = mapper;
         }
 
-        public async Task<List<DoctorCardDto>> GetDoctorCards()
+        public async Task<List<DoctorCardDto>> GetDoctorCards(
+            int? clinicId, 
+            string? speciality, 
+            string? name, 
+            DateTime? appointmentDate)
         {
-            var doctors = await _doctorRepository.GetDoctorCardsAsync();
-            return _mapper.Map<List<DoctorCardDto>>(doctors);
+            var doctorsFromRepo = await _doctorRepository.GetFilteredDoctorCardsAsync(clinicId, speciality, name);
+            var filteredDoctorDtos = _mapper.Map<List<DoctorCardDto>>(doctorsFromRepo);
+            if (appointmentDate.HasValue)
+            {
+                    var availableAtTimeDoctors = new List<DoctorCardDto>();
+                    TimeSpan requestedTimeOfDay = appointmentDate.Value.TimeOfDay;
+                    var tasks = filteredDoctorDtos.Select(async doctorDto =>
+                    {
+                        List<TimeSpan> doctorAvailableSlots = await GetAvailableHoursAsync(doctorDto.DoctorId, appointmentDate.Value);
+                        
+                        if (doctorAvailableSlots.Contains(requestedTimeOfDay))
+                        {
+                            return doctorDto;
+                        }
+                    
+                        return null; 
+                }).ToList();
+
+                var results = await Task.WhenAll(tasks);
+                availableAtTimeDoctors.AddRange(results.Where(d => d != null)!); 
+                
+                return availableAtTimeDoctors;
+            }
+
+            return filteredDoctorDtos;
         }
 
         public async Task<DoctorCardDto> GetDoctorCard(int id)
