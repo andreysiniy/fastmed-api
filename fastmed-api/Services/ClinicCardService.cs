@@ -31,6 +31,12 @@ namespace fastmed_api.Services
             return _mapper.Map<ClinicCardDto>(clinic);
         }
 
+        public async Task<List<ClinicCardDto>> GetClinicCardsByName(string name)
+        {
+            var clinics = await _clinicRepository.GetClinicCardsByNameAsync(name);
+            return _mapper.Map<List<ClinicCardDto>>(clinics);
+        }
+
         public async Task<WorkingHourDto> GetWorkingHoursByWeekDay(int clinicId, int weekDay)
         {
             var clinic = await _clinicRepository.GetClinicCardByIdAsync(clinicId);

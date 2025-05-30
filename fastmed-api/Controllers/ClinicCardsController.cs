@@ -35,6 +35,16 @@ namespace fastmed_api.Controllers
             _logger.LogInformation($"Returning clinic card with id {id}: {clinic}");
             return Ok(clinic);
         }
+        
+        [HttpGet("name/{name}")]
+        public async Task<ActionResult<ClinicCardDto>> GetByName(string name)
+        {
+            _logger.LogInformation($"Getting clinic card with name {name}");
+            var clinic = await _clinicService.GetClinicCardsByName(name);
+            _logger.LogInformation($"Returning clinic card with name {name}: {clinic}");
+            return Ok(clinic);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<ClinicCardDto>> Create(ClinicCardDto clinicCardDto)

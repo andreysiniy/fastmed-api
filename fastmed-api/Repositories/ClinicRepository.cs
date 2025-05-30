@@ -33,8 +33,9 @@ public class ClinicRepository : IClinicRepository
     public async Task<IEnumerable<ClinicCard>> GetClinicCardsByNameAsync(string name)
     {
         return await _context.ClinicCards
-            .Where(c => c.Name.Contains(name))
+            .Where(c => c.Name.Contains(name.Trim().ToLower()))
             .Include(c => c.WorkingHours)
+            .Include(c => c.Doctors)
             .ToListAsync();
     }
 
