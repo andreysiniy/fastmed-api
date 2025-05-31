@@ -110,9 +110,9 @@ namespace fastmed_api.Services
             return timeSlots;
         }
 
-        public async Task<List<string>> GetDoctorSpecialities()
+        public async Task<List<string>> GetDoctorSpecialities(int? clinicId, string? speciality, string? name, DateTime? appointmentDate)
         {
-            var doctors = await this.GetDoctorCards(null, null, null, null);
+            var doctors = await this.GetDoctorCards(clinicId, speciality, name, appointmentDate);
             return doctors.Select(d => d.Speciality).Distinct().ToList();
         }
 

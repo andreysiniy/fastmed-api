@@ -80,10 +80,14 @@ namespace fastmed_api.Controllers
         }
 
         [HttpGet("speciality/")]
-        public async Task<ActionResult<List<string>>> GetSpecialities()
+        public async Task<ActionResult<List<string>>> GetSpecialities(
+            [FromQuery] int? clinicId,
+            [FromQuery] string? speciality,
+            [FromQuery] string? name,
+            [FromQuery] DateTime? appointmentDate)
         {
             _logger.LogInformation("Getting specialities");
-            var specialities = await _doctorCardService.GetDoctorSpecialities();
+            var specialities = await _doctorCardService.GetDoctorSpecialities(clinicId, speciality, name, appointmentDate);
             return Ok(specialities);
         }
 

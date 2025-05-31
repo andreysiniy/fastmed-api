@@ -13,6 +13,6 @@ public interface IDoctorCardService
     Task<List<TimeSpan>> GetAvailableHoursAsync(int doctorCardId, DateTime date);
   //  Task<List<DateTime>> GetAvailableDatesFromTodayAsync(int doctorCardId, DateTime fromDate);
     Task<List<DoctorCardDto>> GetDoctorCardsByNameAsync(string name);
-    Task<List<string>> GetDoctorSpecialities();
+    Task<List<string>> GetDoctorSpecialities(int? clinicId, string? speciality, string? name, DateTime? appointmentDate);
    // Task<List<DoctorCardDto>> GetDoctorCardsByClinic(string clinicName);
 }
