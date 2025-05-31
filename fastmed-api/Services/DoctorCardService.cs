@@ -110,21 +110,17 @@ namespace fastmed_api.Services
             return timeSlots;
         }
 
-      /*  public async Task<List<DateTime>> GetAvailableDatesFromTodayAsync(int doctorCardId, DateTime fromDate)
+        public async Task<List<string>> GetDoctorSpecialities()
         {
-            int weekDay = (int)fromDate.DayOfWeek;
-            var doctor = await _doctorRepository.GetDoctorCardAsync(doctorCardId);
-            var doctorWorkingHours = doctor.Clinic.WorkingHours;
+            var doctors = await this.GetDoctorCards(null, null, null, null);
+            return doctors.Select(d => d.Speciality).Distinct().ToList();
         }
 
-       */
         public async Task<List<DoctorCardDto>> GetDoctorCardsByNameAsync(string name)
         {
             return _mapper.Map<List<DoctorCardDto>>(await _doctorRepository.GetDoctorCardsByNameAsync(name));
         }
 
-     //   public async Task<List<DoctorCardDto>> GetDoctorCardsByClinic(string clinicName)
-      //  {
-       // } 
+
     }
 }

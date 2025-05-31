@@ -79,6 +79,14 @@ namespace fastmed_api.Controllers
             return Ok(timeSlots);
         }
 
+        [HttpGet("speciality/")]
+        public async Task<ActionResult<List<string>>> GetSpecialities()
+        {
+            _logger.LogInformation("Getting specialities");
+            var specialities = await _doctorCardService.GetDoctorSpecialities();
+            return Ok(specialities);
+        }
+
         [HttpGet("name/{name}")]
         public async Task<ActionResult<List<DoctorCardDto>>> GetByName(string name)
         {
