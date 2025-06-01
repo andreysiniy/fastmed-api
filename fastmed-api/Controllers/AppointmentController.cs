@@ -28,20 +28,34 @@ namespace fastmed_api.Controllers
             return Ok(appointments);
         }
 
+        [HttpGet("user/{uuid}")]
+        public async Task<ActionResult<AppointmentDto>> GetByUuid(string uuid)
+        {
+            _logger.LogInformation($"Getting appointments for id {uuid}");
+            var appointments = await _appointmentService.GetAppointmentsByUuid(uuid);
+            if (appointments == null)
+            {
+                _logger.LogWarning($"Appointments for id {uuid} not found");
+                return NotFound();
+            }
+            _logger.LogInformation($"Returning appointments for id {uuid}");
+            return Ok(appointments);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<AppointmentDto>> GetById(int id)
         {
             _logger.LogInformation($"Getting appointment with id {id}");
-            var appointment = await _appointmentService.GetAppointment(id);
-            if (appointment == null)
+            var appointments = await _appointmentService.GetAppointmentById(id);
+            if (appointments == null)
             {
                 _logger.LogWarning($"Appointment with id {id} not found");
                 return NotFound();
             }
             _logger.LogInformation($"Returning appointment with id {id}");
-            return Ok(appointment);
+            return Ok(appointments);
         }
-
+        
         [HttpPost]
         [Route("createOld")]
         public async Task<ActionResult<AppointmentDto>> Create([FromBody] AppointmentDto appointmentDto)
@@ -73,7 +87,7 @@ namespace fastmed_api.Controllers
 
             await _appointmentService.UpdateAppointment(id, appointmentDto);
             _logger.LogInformation($"Updated appointment with id {id}");
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -82,7 +96,7 @@ namespace fastmed_api.Controllers
             _logger.LogInformation($"Deleting appointment with id {id}");
             await _appointmentService.DeleteAppointment(id);
             _logger.LogInformation($"Deleted appointment with id {id}");
-            return Ok();
+            return NoContent();
         }
     }
 }

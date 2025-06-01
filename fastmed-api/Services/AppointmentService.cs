@@ -17,11 +17,18 @@ public class AppointmentService : IAppointmentService
         _mapper = mapper;
     }
 
-    public async Task<AppointmentDto> GetAppointment(int id)
+    public async Task<List<AppointmentDto>> GetAppointmentsByUuid(string uuid)
     {
-        var appointment = await _appointmentRepository.GetAppointmentByIdAsync(id);
-        if (appointment == null) throw new Exception($"AppointmentService: Appointment with id {id} not found");
-        return _mapper.Map<AppointmentDto>(appointment);
+        var appointments = await _appointmentRepository.GetAppointmentsByUuidAsync(uuid);
+        if (appointments == null) throw new Exception($"AppointmentService: Appointment with id {uuid} not found");
+        return _mapper.Map<List<AppointmentDto>>(appointments);
+    }
+    
+    public async Task<AppointmentDto> GetAppointmentById(int id)
+    {
+        var appointments = await _appointmentRepository.GetAppointmentByIdAsync(id);
+        if (appointments == null) throw new Exception($"AppointmentService: Appointment with id {id} not found");
+        return _mapper.Map<AppointmentDto>(appointments);
     }
 
     public async Task<List<AppointmentDto>> GetAppointments()

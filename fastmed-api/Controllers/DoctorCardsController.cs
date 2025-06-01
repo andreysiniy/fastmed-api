@@ -90,7 +90,7 @@ namespace fastmed_api.Controllers
             var specialities = await _doctorCardService.GetDoctorSpecialities(clinicId, speciality, name, appointmentDate);
             return Ok(specialities);
         }
-
+        
         [HttpGet("name/{name}")]
         public async Task<ActionResult<List<DoctorCardDto>>> GetByName(string name)
         {
