@@ -50,8 +50,8 @@ public class AppointmentRepository : IAppointmentRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(int clinicId)
+    public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(int doctorId)
     {
-        return await _context.Appointments.Where(a => a.DoctorId == clinicId).ToListAsync();
+        return await _context.Appointments.Where(a => a.DoctorId == doctorId).ToListAsync();
     }
 }

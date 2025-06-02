@@ -8,11 +8,13 @@ namespace fastmed_api.Services
     public class DoctorCardService : IDoctorCardService
     {
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IAppointmentService _appointmentService;
         private readonly IMapper _mapper;
 
-        public DoctorCardService(IDoctorRepository doctorRepository, IMapper mapper)
+        public DoctorCardService(IDoctorRepository doctorRepository, IAppointmentService appointmentService,IMapper mapper)
         {
             _doctorRepository = doctorRepository;
+            _appointmentService = appointmentService;
             _mapper = mapper;
         }
 
@@ -99,14 +101,17 @@ namespace fastmed_api.Services
             var workingHourEntity = doctorWorkingHours.Where(c => c.DayOfWeek == weekDay).FirstOrDefault();
             WorkingHourDto weekDayWorkingHours = _mapper.Map<WorkingHourDto>(workingHourEntity);
             var timeSlots = new List<TimeSpan>();
-    
+            List<AppointmentDto> appointmentDtos = new List<AppointmentDto>(await _appointmentService.GetAppointmentsByDoctorId(doctorCardId));
+                    
             var currentTime = weekDayWorkingHours.OpenTime;
             while (currentTime < weekDayWorkingHours.CloseTime)
             {
                 timeSlots.Add(currentTime);
                 currentTime = currentTime.Add(TimeSpan.FromMinutes(30)); 
             }
-
+            foreach (var appointmentDto in appointmentDtos)
+                if (appointmentDto.AppointmentTime.Date == date.Date && timeSlots.Contains(appointmentDto.AppointmentTime.TimeOfDay))
+                    timeSlots.Remove(appointmentDto.AppointmentTime.TimeOfDay);
             return timeSlots;
         }
 

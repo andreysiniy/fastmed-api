@@ -5,6 +5,8 @@ namespace fastmed_api.Services;
 public interface IAppointmentService
 {
     Task<List<AppointmentDto>> GetAppointmentsByUuid(string uuid);
+    
+    Task<List<AppointmentDto>> GetAppointmentsByDoctorId(int doctorId);
     Task<AppointmentDto> GetAppointmentById(int id);
     Task<List<AppointmentDto>> GetAppointments();
     Task<AppointmentDto> CreateAppointment(AppointmentDto appointment);

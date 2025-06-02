@@ -10,5 +10,5 @@ public interface IAppointmentRepository
     Task AddAppointmentAsync(Appointment appointment);
     Task UpdateAppointmentAsync(Appointment appointment);
     Task DeleteAppointmentAsync(int id);
-    Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(int clinicId);
+    Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(int doctorId);
 }

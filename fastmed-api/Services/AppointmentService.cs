@@ -23,6 +23,13 @@ public class AppointmentService : IAppointmentService
         if (appointments == null) throw new Exception($"AppointmentService: Appointment with id {uuid} not found");
         return _mapper.Map<List<AppointmentDto>>(appointments);
     }
+
+    public async Task<List<AppointmentDto>> GetAppointmentsByDoctorId(int doctorId)
+    {
+        var appointments = await _appointmentRepository.GetAppointmentsByDoctorIdAsync(doctorId);
+        if (appointments == null) throw new Exception($"AppointmentService: Appointment with id {doctorId} not found");
+        return _mapper.Map<List<AppointmentDto>>(appointments);
+    }
     
     public async Task<AppointmentDto> GetAppointmentById(int id)
     {
